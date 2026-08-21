@@ -23,6 +23,9 @@ add_executable(proj_tests
     tests/test_proj.cpp
 )
 
+file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/tests/hello.txt
+     DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
+
 target_link_libraries(proj_tests PRIVATE proj_lib gtest gtest_main)
 
 enable_testing()
