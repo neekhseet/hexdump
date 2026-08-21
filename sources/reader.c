@@ -1,10 +1,39 @@
 #include "../includes/reader.h"
-#include <sys/types.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <fcntl.h>
+#include <unistd.h>
 
-filedata readfile(const char *path)
-{
-    filedata fd;
-    fd.length = (size_t)13;
+filedata readfile(const char *path) {
+    filedata data;
+    memset(&data, 0, sizeof(data)); 
 
-    return fd;
-};
+    int fd = open(path, O_RDONLY);
+    if (fd < 0) {
+        return data; 
+    }
+
+    char buffer[MAX_BUFF_SIZE]; 
+    ssize_t readed_bytes = read(fd, buffer, sizeof(buffer) - 1);
+    
+    if (readed_bytes <= 0) {
+        close(fd);
+        return data;
+    }
+
+    buffer[readed_bytes] = '\0'; 
+
+    data.data = (char *)malloc(readed_bytes + 1);
+    if (data.data == NULL) {
+        close(fd);
+        return data;
+    }
+
+    memcpy(data.data, buffer, readed_bytes);
+    data.data[readed_bytes] = '\0'; 
+    data.length = (size_t)readed_bytes; 
+
+    close(fd); 
+    return data;
+}
