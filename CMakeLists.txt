@@ -15,6 +15,7 @@ FetchContent_MakeAvailable(googletest)
 
 add_library(proj_lib STATIC
     sources/hexdump.c
+    sources/reader.c
 )
 target_include_directories(proj_lib PUBLIC headers)
 
