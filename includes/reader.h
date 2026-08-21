@@ -1,11 +1,13 @@
 #pragma once
 #include <stddef.h>
 
+#define MAX_BUFF_SIZE 24
+
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-typedef struct filedata {
+typedef struct {
   char *data;
   size_t length;
 } filedata;
