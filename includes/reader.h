@@ -1,5 +1,11 @@
 #pragma once
+
+#include <fcntl.h>
 #include <stddef.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <unistd.h>
 
 #define MAX_BUFF_SIZE 24
 
