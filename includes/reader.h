@@ -10,15 +10,17 @@
 #define MAX_BUFF_SIZE 24
 
 #ifdef __cplusplus
-extern "C" {
+extern "C"
+{
 #endif
 
-typedef struct {
-  char *data;
-  size_t length;
-} filedata;
+  typedef struct Bytes
+  {
+    char data[17];
+    struct Bytes *next;
+  } Bytes;
 
-filedata readfile(const char *path);
+  Bytes *readfile(const char *path);
 
 #ifdef __cplusplus
 }
