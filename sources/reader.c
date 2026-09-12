@@ -1,35 +1,50 @@
 #include "../includes/reader.h"
 
-
-filedata readfile(const char *path) {
-    filedata data;
-    memset(&data, 0, sizeof(data)); 
+Bytes *readfile(const char *path)
+{
+    Bytes *head = NULL;
+    Bytes *temp = NULL;
+    Bytes *new = NULL;
 
     int fd = open(path, O_RDONLY);
-    if (fd < 0) {
-        return data; 
+    if (fd < 0)
+    {
+        return head;
     }
 
-    char buffer[MAX_BUFF_SIZE]; 
-    ssize_t readed_bytes = read(fd, buffer, sizeof(buffer) - 1);
-    
-    if (readed_bytes <= 0) {
-        close(fd);
-        return data;
+    char buffer[17];
+
+    for (;;)
+    {
+        ssize_t readed_bytes = read(fd, buffer, 16);
+
+        if (readed_bytes < 0)
+            break;
+
+        if (readed_bytes == 0)
+            break;
+
+        new = malloc(sizeof(Bytes));
+
+        if (new == NULL)
+            break;
+
+        memcpy(new->data, buffer, readed_bytes);
+        new->data[readed_bytes] = '\0';
+        new->next = NULL;
+
+        if (head == NULL)
+        {
+            head = new;
+            temp = new;
+        }
+        else
+        {
+            temp->next = new;
+            temp = new;
+        }
     }
 
-    buffer[readed_bytes] = '\0'; 
-
-    data.data = (char *)malloc(readed_bytes + 1);
-    if (data.data == NULL) {
-        close(fd);
-        return data;
-    }
-
-    memcpy(data.data, buffer, readed_bytes);
-    data.data[readed_bytes] = '\0'; 
-    data.length = (size_t)readed_bytes; 
-
-    close(fd); 
-    return data;
+    close(fd);
+    return head;
 }
