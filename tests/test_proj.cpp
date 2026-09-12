@@ -2,7 +2,10 @@
 #include "../includes/reader.h"
 #include <gtest/gtest.h>
 
-TEST(ProjTest, ReadFile) {
-  filedata data = readfile("hello.txt");
-  EXPECT_EQ(data.length, 13);
+TEST(ProjTest, ReadFile)
+{
+  Bytes *readed = readfile("hello.txt");
+  ASSERT_NE(readed, nullptr);
+  EXPECT_EQ(memcmp(readed->data, "Hello", 5), 0);
+  EXPECT_STREQ(readed->data, "Hello, world!");
 }
